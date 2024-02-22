@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mycoolapp-deployment
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: mycoolapp
+  template:
+    metadata:
+      labels:
+        app: mycoolapp
+    spec:
+      containers:
+      - name: mycoolapp
+        image: 737047471328.dkr.ecr.us-east-1.amazonaws.com/alphonsedev:13
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8082
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: amycoolapp-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: mycoolapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8082
